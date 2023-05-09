@@ -1,22 +1,15 @@
 <template>
-  <!-- Happy Coding -->
   <div class="calculator">
-    
-    <!-- Calculator Result -->
     <div class="result">
       {{ calculatorValue || 0 }}
     </div>
-
-    <!-- Calculator buttons -->
     <div class="buttons">
-      <div class="button" v-for="n in calculatorElements" :key="n"
-        :class="{'operator': ['C','*','/','-','+','%','='].includes(n)}"
-        @click="action(n)"
-      >
-        {{n}}
+      <div class="button" v-for="opr in calculatorElements" :key="opr"
+        :class="{'operator': ['C','*','/','-','+','%','='].includes(opr)}"
+        @click="action(opr)">
+        {{opr}}
       </div>
     </div>
-
   </div>
 </template>
 
@@ -37,27 +30,29 @@ export default {
   },
 
   methods: {
-    action(n){
+    action(opr){
 
-      if(!isNaN(n) || n === '.'){
-        this.calculatorValue += n + '';
+      if(!isNaN(opr) || opr === '.'){
+        if(this.calculatorValue !== null){
+          this.calculatorValue += opr + '';
+        }
       }
 
-      if(n === 'C'){
+      if(opr === 'C'){
         this.calculatorValue = '';
       }
 
-      if(n === '%'){
+      if(opr === '%'){
         this.calculatorValue = this.calculatorValue / 100 + '';
       }
 
-      if(['/','*','-','+'].includes(n)){
-        this.operator = n;
+      if(['/','*','-','+'].includes(opr)){
+        this.operator = opr;
         this.previousCalculatorValue = this.calculatorValue;
         this.calculatorValue = '';
       }
 
-      if(n === '='){
+      if(opr === '='){
         if(this.calculatorValue !== null){
           this.calculatorValue = eval(
           this.previousCalculatorValue + this.operator + this.calculatorValue
